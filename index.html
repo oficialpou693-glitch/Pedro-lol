@@ -1,287 +1,346 @@
-import os
-
-# Conteúdo do HTML com CSS embutido para parecer uma documentação profissional (estilo GitBook/ReadTheDocs)
-html_content = """
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Docs | O Fenômeno Pedro Benedetti</title>
+    <title>PB-OS | Documentação Oficial Arch & OW</title>
     <style>
         :root {
-            --primary-color: #ff69b4;
-            --secondary-color: #fce4ec;
-            --sidebar-color: #2d3436;
-            --text-color: #2d3436;
-            --accent-color: #e91e63;
-            --code-bg: #f5f5f5;
+            --pink-primary: #ff69b4;
+            --pink-dark: #ff1493;
+            --pink-light: #fff0f5;
+            --bg-dark: #1e1e2e;
+            --bg-sidebar: #11111b;
+            --text-main: #cdd6f4;
+            --text-muted: #a6adc8;
+            --code-bg: #181825;
+            --arch-blue: #1793d1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             display: flex;
-            background-color: #fafafa;
-            color: var(--text-color);
+            min-height: 100vh;
         }
 
-        /* Sidebar */
+        /* Sidebar Estatística */
         nav {
-            width: 250px;
-            height: 100vh;
-            background-color: var(--sidebar-color);
-            color: white;
+            width: 280px;
+            background-color: var(--bg-sidebar);
+            padding: 25px;
             position: fixed;
-            padding: 20px;
-            box-sizing: border-box;
+            height: 100vh;
+            border-right: 1px solid #313244;
+            overflow-y: auto;
         }
 
         nav h1 {
-            font-size: 1.2rem;
-            color: var(--primary-color);
+            font-size: 1.1rem;
+            color: var(--pink-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
             margin-bottom: 30px;
-            border-bottom: 2px solid var(--primary-color);
+            text-align: center;
+            border-bottom: 1px dashed var(--pink-primary);
             padding-bottom: 10px;
         }
 
         nav ul {
             list-style: none;
-            padding: 0;
         }
 
         nav ul li {
-            margin: 15px 0;
+            margin-bottom: 12px;
         }
 
         nav ul li a {
-            color: #dfe6e9;
+            color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: 0.3s;
+            font-size: 0.95rem;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
         }
 
         nav ul li a:hover {
-            color: var(--primary-color);
-            padding-left: 5px;
+            background-color: #252538;
+            color: var(--pink-primary);
+            padding-left: 18px;
         }
 
-        /* Main Content */
+        /* Conteúdo Principal */
         main {
-            margin-left: 250px;
-            padding: 40px 60px;
-            width: 100%;
-            max-width: 900px;
+            margin-left: 280px;
+            padding: 50px;
+            width: calc(100% - 280px);
+            max-width: 1000px;
         }
 
         header {
-            border-bottom: 1px solid #ddd;
             margin-bottom: 40px;
+            border-bottom: 1px solid #313244;
+            padding-bottom: 20px;
         }
 
-        h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        h2 { font-size: 1.8rem; color: var(--accent-color); margin-top: 40px; border-left: 5px solid var(--primary-color); padding-left: 15px; }
-        h3 { font-size: 1.3rem; margin-top: 30px; }
-
-        p { line-height: 1.6; font-size: 1.1rem; }
-
-        .warning-box {
-            background-color: #fff3f3;
-            border-left: 6px solid #ff4d4d;
-            padding: 20px;
-            margin: 20px 0;
-            font-style: italic;
-        }
-
-        .code-block {
-            background-color: var(--code-bg);
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            font-family: 'Courier New', Courier, monospace;
-            overflow-x: auto;
-            position: relative;
-        }
-
-        .badge {
+        .status-badge {
+            background-color: var(--pink-primary);
+            color: #000;
+            font-weight: bold;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
             display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-right: 5px;
+            margin-right: 10px;
         }
 
+        .arch-badge {
+            background-color: var(--arch-blue);
+            color: #fff;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-top: 15px;
+            color: #fff;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--pink-primary);
+            margin-top: 45px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #cdd6f4;
+        }
+
+        /* Alertas e Notas */
+        .callout {
+            background-color: #251e2e;
+            border-left: 4px solid var(--pink-primary);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 25px 0;
+        }
+
+        .callout-arch {
+            background-color: #162431;
+            border-left: 4px solid var(--arch-blue);
+        }
+
+        .callout strong {
+            color: #fff;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Tabelas */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 25px 0;
+            background-color: #181825;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         table th, table td {
-            border: 1px solid #ddd;
-            padding: 12px;
+            padding: 14px;
             text-align: left;
+            border-bottom: 1px solid #313244;
         }
 
         table th {
-            background-color: var(--secondary-color);
+            background-color: #11111b;
+            color: var(--pink-primary);
+            font-weight: 600;
         }
 
+        /* Código */
+        .code-window {
+            background-color: var(--code-bg);
+            border: 1px solid #313244;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+            margin: 25px 0;
+            color: #f5e0dc;
+        }
+
+        .code-comment { color: #6c7086; font-style: italic; }
+        .code-keyword { color: #cba6f7; }
+        .code-string { color: #a6e3a1; }
+
+        /* Rodapé */
         footer {
-            margin-top: 100px;
+            margin-top: 80px;
             padding: 40px 0;
-            border-top: 2px solid var(--primary-color);
+            border-top: 1px solid #313244;
             text-align: center;
-            font-weight: bold;
         }
 
-        .aura-meter {
-            width: 100%;
-            background: #eee;
-            height: 20px;
-            border-radius: 10px;
-            margin: 10px 0;
+        .credit-title {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, var(--pink-primary), #cba6f7, var(--arch-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            margin-top: 10px;
+            letter-spacing: 1px;
         }
 
-        .aura-fill {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, #ff69b4, #e91e63);
-            border-radius: 10px;
+        /* Lista customizada */
+        ul.custom-list li {
+            margin-left: 20px;
+            margin-bottom: 10px;
+            list-style-type: "🌸 ";
         }
 
-        /* Mobile tweaks */
         @media (max-width: 768px) {
-            nav { width: 100%; height: auto; position: relative; }
-            main { margin-left: 0; padding: 20px; }
             body { flex-direction: column; }
+            nav { width: 100%; height: auto; position: relative; }
+            main { margin-left: 0; width: 100%; padding: 20px; }
         }
     </style>
 </head>
 <body>
 
 <nav>
-    <h1>PB-DOCS v4.2.0</h1>
+    <h1>PB-CORE v5.0</h1>
     <ul>
-        <li><a href="#intro">01. Introdução</a></li>
-        <li><a href="#genetic">02. Mutação Genética</a></li>
-        <li><a href="#equipment">03. Equipamento Obrigatório</a></li>
-        <li><a href="#code">04. O Algoritmo do Destino</a></li>
-        <li><a href="#faq">05. Perguntas Frequentes</a></li>
+        <li><a href="#kernel">01. O Kernel Femboy</a></li>
+        <li><a href="#arch">02. O Incidente Arch Linux</a></li>
+        <li><a href="#ow">03. Protocolo Overwatch</a></li>
+        <li><a href="#impacto">04. Tabela de Impacto</a></li>
+        <li><a href="#terminal">05. Logs do Terminal</a></li>
+        <li><a href="#creditos">06. Autoridade Máxima</a></li>
     </ul>
 </nav>
 
 <main>
     <header>
-        <span class="badge">ESTUDO SIGILOSO</span>
-        <span class="badge">AURA NÍVEL 67</span>
-        <h1>Documentação: O Efeito "Pedro Benedetti"</h1>
-        <p>Análise técnica sobre a inevitabilidade da transição femboy em espécimes com esta nomenclatura específica.</p>
+        <span class="status-badge">Anomalia Crítica</span>
+        <span class="status-badge arch-badge">Arch User Detected</span>
+        <h1>Análise de Mutação: Pedro Benedetti</h1>
+        <p>Relatório atualizado em tempo real após a quebra definitiva de sua última barreira de masculinidade.</p>
     </header>
 
-    <section id="intro">
-        <h2>01. Introdução</h2>
-        <p>O nome <strong>Pedro Benedetti</strong> não é apenas uma identificação civil, mas sim um gatilho biológico. Estudos realizados no <em>Aura Institute</em> comprovam que, ao ser batizado com este nome, o indivíduo entra automaticamente em uma contagem regressiva para a compra de sua primeira saia plissada.</p>
-        
-        <div class="warning-box">
-            <strong>AVISO:</strong> A exposição prolongada a um Pedro Benedetti pode causar vontade repentina de jogar de Mercy no Overwatch ou instalar Arch Linux.
-        </div>
+    <section id="kernel">
+        <h2>01. O Kernel Femboy</h2>
+        <p>A ciência já havia comprovado que a aura de qualquer indivíduo com o nome <strong>Pedro Benedetti</strong> era propensa ao uso de meias longas e reações fofas no chat. Porém, eventos recentes aceleraram o processo de transformação em 400%, tornando o caso irreversível.</p>
     </section>
 
-    <section id="genetic">
-        <h2>02. Mutação Genética e Sintomas</h2>
-        <p>A mutação ocorre no cromossomo <strong>PB-24</strong>. Os sintomas progridem em escala logarítmica conforme demonstrado abaixo:</p>
+    <section id="arch">
+        <h2>02. O Incidente Arch Linux (Compilação do Destino)</h2>
+        <p>Tudo mudou quando o sujeito decidiu que os sistemas operacionais normais "não eram complexos o suficiente". Ao digitar os comandos de instalação do <strong>Arch Linux</strong>, o Pedro Benedetti ativou sua forma final.</p>
+        
+        <div class="callout callout-arch">
+            <strong>📊 Nota Técnica do Sistema:</strong>
+            De acordo com os registros, o processo de passar 14 horas configurando uma interface gráfica rosa e instalando o <code>neofetch</code> fez com que os níveis de testosterona caíssem para zero, sendo substituídos por puro instinto de programação estética.
+        </div>
+        <p>Agora, ele não apenas usa o computador; ele passa o dia customizando o gerenciador de janelas (Hyprland) enquanto ajusta a altura das suas <em>programming socks</em>.</p>
+    </section>
+
+    <section id="ow">
+        <h2>03. Protocolo Overwatch (A Síndrome do Suporte)</h2>
+        <p>Não bastasse a destruição do sistema operacional, o indivíduo realizou o download de <strong>Overwatch</strong>. Cientistas da Aura previam que ele tentaria jogar com personagens brutos, mas a genética do nome falou mais alto.</p>
+        <ul class="custom-list">
+            <li><strong>Main Mercy/D.Va:</strong> Passa 100% da partida voando atrás dos outros e soltando falas fofas enquanto grita no Discord quando alguém o ataca.</li>
+            <li><strong>Estética Gamer:</strong> O uso do headset de orelha de gato agora é obrigatório para conseguir ouvir os passos dos flanqueadores no jogo.</li>
+            <li><strong>O Surto do Rage:</strong> Quando perde a partida, o xingamento mais pesado proferido pelo indivíduo é "Poxa vida, seu boboca :(".</li>
+        </ul>
+    </section>
+
+    <section id="impacto">
+        <h2>04. Tabela de Impacto da Mutação</h2>
+        <p>Abaixo está o gráfico de telemetria que compara o Pedro Benedetti clássico com o atualizado com Arch e Overwatch:</p>
         
         <table>
             <thead>
                 <tr>
-                    <th>Fase</th>
-                    <th>Sintoma Visual</th>
-                    <th>Nível de Aura</th>
+                    <th>Atributo</th>
+                    <th>Antes do Arch/OW</th>
+                    <th>Depois do Arch/OW</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>Incial</td>
-                    <td>Uso excessivo de ":3"</td>
-                    <td>10%</td>
+                    <td>Sistema Operacional</td>
+                    <td>Windows 10 todo travado</td>
+                    <td>Arch Linux (Tema Anime/Rosa)</td>
                 </tr>
                 <tr>
-                    <td>Intermediária</td>
-                    <td>Cabelo hidratado demais para um hétero</td>
-                    <td>45%</td>
+                    <td>Função no Jogo</td>
+                    <td>Queria dar tiro (mas errava)</td>
+                    <td>Cura o time inteiro enquanto usa skin rosa</td>
                 </tr>
                 <tr>
-                    <td>Avançada</td>
-                    <td>Uso de Meias 7/8 (Programming Socks)</td>
-                    <td>99.9%</td>
+                    <td>Vocabulário Principal</td>
+                    <td>"Eae mano"</td>
+                    <td>"UwU", "Instalei o Gentoo no meu microondas"</td>
+                </tr>
+                <tr>
+                    <td>Nível de Aura Residual</td>
+                    <td>Aura mediana</td>
+                    <td>Aura totalmente resetada (Submetido à Aura Nível 67)</td>
                 </tr>
             </tbody>
         </table>
     </section>
 
-    <section id="equipment">
-        <h2>03. Equipamento Obrigatório</h2>
-        <p>Todo Pedro Benedetti possui um kit de sobrevivência padrão em seu habitat (quarto escuro com LED):</p>
-        <ul>
-            <li><strong>Blåhaj (Tubarão da IKEA):</strong> Atua como um amplificador de fofura.</li>
-            <li><strong>Monster Energy (Rosa):</strong> O combustível oficial da espécie.</li>
-            <li><strong>Orelhas de Gato:</strong> Item obrigatório para melhor recepção de sinal Wi-Fi.</li>
-            <li><strong>Teclado Mecânico:</strong> Deve fazer barulho de "click" e brilhar em tons pastel.</li>
-        </ul>
-    </section>
+    <section id="terminal">
+        <h2>05. Logs do Terminal (~/pedro_benedetti)</h2>
+        <p>Compilado de comandos executados no terminal do Pedro nas últimas 24 horas:</p>
 
-    <section id="code">
-        <h2>04. O Algoritmo do Destino</h2>
-        <p>Abaixo, o código fonte que roda no cérebro de qualquer Pedro Benedetti:</p>
-        
-        <div class="code-block">
-<pre>
-while (pessoa.nome == "Pedro Benedetti") {
-    pessoa.usarSaia();
-    pessoa.mainarSup();
-    pessoa.beberMonster();
-    
-    if (pessoa.sentirTristeza) {
-        pessoa.comprarPelucia();
-        console.log("UwU mode: ON");
-    }
-    
-    // Verificando nível de Aura
-    if (Aura.check() < 67) {
-        Aura.recharge("Benício 67 aura");
-    }
-}
-</pre>
+        <div class="code-window">
+            <span class="code-comment"># Verificando dependências de Femboy</span><br>
+            $ <span class="code-keyword">sudo pacman</span> -S meias-listradas monster-energy-rosa thigh-highs<br>
+            <span class="code-string">:: Processando pacotes... Transformação em andamento [100%]</span><br><br>
+            
+            <span class="code-comment"># Iniciando o Overwatch via Wine (porque ele usa Linux agora)</span><br>
+            $ <span class="code-keyword">lutris</span> --launch overwatch-2 --char "mercy-com-skin-rosa"<br>
+            <span class="code-string">[INFO] Carregando piadas de programador...</span><br>
+            <span class="code-string">[WARN] Avisando pro time que "sou menino, mas jogo de bonequinha"</span><br><br>
+
+            <span class="code-comment"># Tentando recuperar a aura de macho</span><br>
+            $ <span class="code-keyword">./tentar_ser_hetero.sh</span><br>
+            <span class="code-string">Erro: Arquivo "testosterona.dll" não encontrado. Sistema operando em modo Femboy Seguro. :3</span>
         </div>
     </section>
 
-    <section id="faq">
-        <h2>05. Perguntas Frequentes (FAQ)</h2>
-        <h3>E se o Pedro for pra academia?</h3>
-        <p>Ele se tornará um <em>Gym Femboy</em>. O destino é inevitável, só muda o diâmetro da coxa.</p>
-        
-        <h3>Existe cura?</h3>
-        <p>Não. A única solução é aceitar e aprender a fazer o delineado perfeito.</p>
+    <section id="creditos">
+        <footer>
+            <p>Este banco de dados de alta periculosidade é catalogado, revisado e assinado digitalmente pelo ser supremo da internet:</p>
+            <div class="credit-title">Benício 67 aura</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 15px;">
+                "O Arch Linux compila o sistema, o Overwatch dita a skin, mas quem manda na Aura sou eu."
+            </p>
+        </footer>
     </section>
-
-    <footer>
-        <p>Este documento é mantido e autenticado por:</p>
-        <div style="font-size: 1.5rem; color: #e91e63;">Benício 67 aura</div>
-        <p style="font-size: 0.8rem; opacity: 0.7;">© 2024 - Todos os direitos reservados aos portadores de aura superior.</p>
-    </footer>
 </main>
 
 </body>
 </html>
-"""
-
-# Salvando o arquivo
-file_path = 'documentacao_pedro_benedetti.html'
-with open(file_path, 'w', encoding='utf-8') as f:
-    f.write(html_content)
-
-print(f"Site gerado com sucesso em: {file_path}")
-  
